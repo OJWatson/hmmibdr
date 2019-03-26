@@ -1,0 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^.*\.hmm_fract\.txt$
+^.*\.hmm\.txt$
+^README\.Rmd$

@@ -1,0 +1,49 @@
+---
+output: github_document
+---
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+# hmmibdr
+
+Direct wrapper for [HMMIBD](https://github.com/glipsnort/hmmIBD) in Rcpp. 
+
+## Installation
+
+You can install the latest version using:
+
+```{r gh_installation, message=FALSE, eval = FALSE}
+#install.packages("devtools")
+devtools::install_github("OJWatson/hmmibdr")
+```
+
+```{r}
+# Load the package
+library(hmmibdr)
+```
+
+## Demonstration
+
+Firstly, with one population:
+
+```{r sc}
+## one population
+out <- hmm_ibd(input_file = system.file("extdata/pf3k_Cambodia_13.txt", package = "hmmibdr"),
+               allele_freqs =  system.file("extdata/freqs_pf3k_Cambodia_13.txt", package = "hmmibdr"),
+               output_file = "output_Cambodia")
+```
+
+And two populations:
+
+```{r surv}
+## two pops
+out <- hmm_ibd(input_file = system.file("extdata/pf3k_Cambodia_13.txt", package = "hmmibdr"),
+               allele_freqs = system.file("extdata/freqs_pf3k_Cambodia_13.txt", package = "hmmibdr"),
+               genotypes_sec_pop = system.file("extdata/pf3k_Ghana_13.txt", package = "hmmibdr"),
+               allele_freqs_sec_pop = system.file("extdata/freqs_pf3k_Ghana_13.txt", package = "hmmibdr"),
+               output_file = "output_Cambodia_Ghana")
+```
