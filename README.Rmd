@@ -32,18 +32,31 @@ Firstly, with one population:
 
 ```{r sc}
 ## one population
+tf <- tempfile(pattern = "output_Cambodia")
 out <- hmm_ibd(input_file = system.file("extdata/pf3k_Cambodia_13.txt", package = "hmmibdr"),
                allele_freqs =  system.file("extdata/freqs_pf3k_Cambodia_13.txt", package = "hmmibdr"),
-               output_file = "output_Cambodia")
+               output_file = tf)
 ```
 
-And two populations:
+`hmmibdr` now returns the relevant fractions and segments as a list. Firstly the fraction of sites IBD:
+
+```{r list returns}
+head(out$fract)
+```
+
+And the segments compared:
+
+```{r list segments}
+head(out$segments)
+```
+
+`hmmibdr` also can be run for two populations:
 
 ```{r surv}
 ## two pops
+tf2 <- tempfile("output_Cambodia_Ghana")
 out <- hmm_ibd(input_file = system.file("extdata/pf3k_Cambodia_13.txt", package = "hmmibdr"),
                allele_freqs = system.file("extdata/freqs_pf3k_Cambodia_13.txt", package = "hmmibdr"),
                genotypes_sec_pop = system.file("extdata/pf3k_Ghana_13.txt", package = "hmmibdr"),
                allele_freqs_sec_pop = system.file("extdata/freqs_pf3k_Ghana_13.txt", package = "hmmibdr"),
-               output_file = "output_Cambodia_Ghana")
-```
+               output_file = tf2)

@@ -241,14 +241,22 @@ int hmmibd_c(Rcpp::List param_list) {
   fprintf(pf, "\tN_state_transition\tseq_shared_best_traj\tfract_sites_IBD\tfract_vit_sites_IBD\n");
 
   // Check line size
-  fgets(newLine1, linesize, inf1); // header1
-  while (strlen(newLine1) > (unsigned long) linesize-2) {
-    fseek(inf1, 0, 0);
-    linesize *= 2;
-    free(newLine1);
-    newLine1 = (char *)malloc((linesize+1) * sizeof(char));
-    fgets(newLine1, linesize, inf1); // header1
+  if(fgets(newLine1, linesize, inf1) != NULL) { // header1
+    while (strlen(newLine1) > (unsigned long) linesize-2) {
+      fseek(inf1, 0, 0);
+      linesize *= 2;
+      free(newLine1);
+      newLine1 = (char *)malloc((linesize+1) * sizeof(char));
+      if(fgets(newLine1, linesize, inf1) == NULL) { // header1
+        REprintf("Could not read string from stream %s\n", inf1);
+        Rcpp::stop("");
+      }
+    }
+  } else {
+    REprintf("Could not read string from stream %s\n", inf1);
+    Rcpp::stop("");
   }
+
   newLine1[strcspn(newLine1, "\r\n")] = 0;
   head = (char *)malloc((linesize+1) * sizeof(char));
   assert(head != NULL);
@@ -298,14 +306,22 @@ int hmmibd_c(Rcpp::List param_list) {
   // Note: using newLine1 for both files until we start reading genotypes. This way newLine2 only
   //  has to be allocated once, after both headers have been read and the line length possibly increased
   if (iflag2 == 1) {
-    fgets(newLine1, linesize, inf2); // header2
+    if(fgets(newLine1, linesize, inf2) != NULL){ // header2
     while (strlen(newLine1) > (unsigned long) linesize-2) {
       fseek(inf2, 0, 0);
       linesize *= 2;
       free(newLine1);
       newLine1 = (char *)malloc((linesize+1) * sizeof(char));
-      fgets(newLine1, linesize, inf2); // header2
+      if(fgets(newLine1, linesize, inf2) == NULL) { // header2
+        REprintf("Could not read string from stream %s\n", inf2);
+        Rcpp::stop("");
+      }
     }
+    } else {
+      REprintf("Could not read string from stream %s\n", inf2);
+      Rcpp::stop("");
+    }
+
     newLine2 = (char *)malloc((linesize+1) * sizeof(char));
     newLine1[strcspn(newLine1, "\r\n")] = 0;
     free(head);
@@ -429,8 +445,12 @@ int hmmibd_c(Rcpp::List param_list) {
   while (fgets(newLine1, linesize, inf1) != NULL) {
     newLine1[strcspn(newLine1, "\r\n")] = 0;
     if (iflag2 == 1) {
-      fgets(newLine2, linesize, inf2);
+      if(fgets(newLine2, linesize, inf2) != NULL) {;
       newLine2[strcspn(newLine2, "\r\n")] = 0;
+      } else {
+        REprintf("Could not read string from stream %s\n", inf2);
+        Rcpp::stop("");
+      }
     }
     if (nsnp == max_snp) {
       nall = (int *)realloc(nall, 2*max_snp*sizeof(int));
@@ -567,7 +587,11 @@ int hmmibd_c(Rcpp::List param_list) {
       for (iall = 0; iall <= max_all; iall++) {
         ffreq1[iall] = 0;
       }
-      fgets(newLine1, linesize, ff1);
+
+      if (fgets(newLine1, linesize, ff1) == NULL) {
+        REprintf("Could not read string from stream %s\n", ff1);
+        Rcpp::stop("");
+      };
       fpos = fchr = 0;
       for (running = newLine1, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
         if (itoken == 0) {
@@ -599,7 +623,10 @@ int hmmibd_c(Rcpp::List param_list) {
       for (iall = 0; iall <= max_all; iall++) {
         ffreq2[iall] = 0;
       }
-      fgets(newLine2, linesize, ff2);
+      if (fgets(newLine2, linesize, ff2) == NULL) {
+        REprintf("Could not read string from stream %s\n", ff2);
+        Rcpp::stop("");
+      };
       fpos = fchr = 0;
       for (running = newLine2, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
         if (itoken == 0) {

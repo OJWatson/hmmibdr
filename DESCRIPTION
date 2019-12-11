@@ -1,16 +1,25 @@
 Package: hmmibdr
 Type: Package
 Title: HMM Identity by Descent 
-Version: 0.1.0
+Version: 0.2.0
 Author: OJ Watson
-Maintainer: OJ Watson <oj.watson@hotmail.co.uk>
+Authors@R: 
+    c(person(given = "OJ",
+             family = "Watson",
+             role = c("aut", "cre"),
+             email = "oj.watson@hotmail.co.uk",
+             comment = c(ORCID = "0000-0003-2374-0741")))
+Maintainer: Oliver Watson <o.watson@imperial.ac.uk>
 Description: Wrapper for HMMIBD in Rcpp.
-License: GPL-3
+License: MIT + file LICENCE
 LazyData: true
 Depends: R (>= 3.2.1)
 Imports: 
     Rcpp (>= 1.0.0)
+Suggests:
+    testthat
+BugReports: https://github.com/OJWatson/hmmibdr/issues
 LinkingTo: Rcpp
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 SystemRequirements: C++11

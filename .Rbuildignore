@@ -4,3 +4,5 @@
 ^.*\.hmm\.txt$
 ^README\.Rmd$
 scripts
+^scripts$
+.travis.yml

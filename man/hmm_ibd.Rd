@@ -4,12 +4,26 @@
 \alias{hmm_ibd}
 \title{The Real McCOIL categorical method function}
 \usage{
-hmm_ibd(input_file, output_file, allele_freqs = NULL,
-  genotypes_sec_pop = NULL, allele_freqs_sec_pop = NULL,
-  max_fit_iterations = NULL, exclude_ids = NULL, analysis_ids = NULL,
-  num_gens = NULL, overwrite = FALSE, fract_only = FALSE,
-  eps = 0.001, min_inform = 10, min_discord = 0, max_discord = 1,
-  nchrom = 14, min_snp_sep = 5, rec_rate = 7.47e-05)
+hmm_ibd(
+  input_file,
+  output_file,
+  allele_freqs = NULL,
+  genotypes_sec_pop = NULL,
+  allele_freqs_sec_pop = NULL,
+  max_fit_iterations = NULL,
+  exclude_ids = NULL,
+  analysis_ids = NULL,
+  num_gens = NULL,
+  overwrite = FALSE,
+  fract_only = FALSE,
+  eps = 0.001,
+  min_inform = 10,
+  min_discord = 0,
+  max_discord = 1,
+  nchrom = 14,
+  min_snp_sep = 5,
+  rec_rate = 7.47e-05
+)
 }
 \arguments{
 \item{input_file}{File of genotype data. See below for format.}

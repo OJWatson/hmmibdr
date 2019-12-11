@@ -3,7 +3,6 @@
 \docType{package}
 \name{hmmibdr}
 \alias{hmmibdr}
-\alias{hmmibdr-package}
 \title{Wrapper for HMMIBD in Rcpp}
 \description{
 Wrapper for HMMIBD in Rcpp
