@@ -10,6 +10,10 @@ knitr::opts_chunk$set(
 ```
 # hmmibdr
 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Travis-CI Build Status](https://travis-ci.org/ojwatson/hmmibdr.png?branch=master)](https://travis-ci.org/ojwatson/hmmibdr)
+[![codecov.io](https://codecov.io/github/ojwatson/hmmibdr/coverage.svg?branch=master)](https://codecov.io/github/ojwatson/hmmibdr?branch=master)
+
 Direct wrapper for [HMMIBD](https://github.com/glipsnort/hmmIBD) in Rcpp. 
 
 ## Installation
