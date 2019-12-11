@@ -7,7 +7,9 @@
 hmm_ibd(input_file, output_file, allele_freqs = NULL,
   genotypes_sec_pop = NULL, allele_freqs_sec_pop = NULL,
   max_fit_iterations = NULL, exclude_ids = NULL, analysis_ids = NULL,
-  num_gens = NULL)
+  num_gens = NULL, overwrite = FALSE, fract_only = FALSE,
+  eps = 0.001, min_inform = 10, min_discord = 0, max_discord = 1,
+  nchrom = 14, min_snp_sep = 5, rec_rate = 7.47e-05)
 }
 \arguments{
 \item{input_file}{File of genotype data. See below for format.}
@@ -46,6 +48,26 @@ with substantial linkage disequilbrium. Specifying a small value will
 force the program to assume little recombination and thus a low
 transition rate; otherwise it will identify the small blocks of LD as
 ancient IBD, and will force the number of generations to be large.}
+
+\item{overwrite}{Boolean detailing if output files already exist, should
+they be overwritten. Deafult = FALSE}
+
+\item{fract_only}{Boolean detailing whether to rturn just the fract.
+Default = FALSE}
+
+\item{eps}{Numeric for error rate in genotype calls. Default = .001}
+
+\item{min_inform}{Minimum number of informative sites in a pairwise. Default = 10}
+
+\item{min_discord}{Minimum discordance in comparison. Default = 0. Set > 0 to skip identical pairs}
+
+\item{max_discord}{Maximum discordance in comparison. Default = 1. Set < 1 to skip unrelated pairs}
+
+\item{nchrom}{Number of chromosomes. Default = 14 for falciparum}
+
+\item{min_snp_sep}{Minimum snp distance, i.e. skip next snp(s) if too close to last one. Default = 5 (bp)}
+
+\item{rec_rate}{Recombination rate. Default = 7.4e-7. (7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016))}
 }
 \value{
 return list of summary data frames of hmmIBD output

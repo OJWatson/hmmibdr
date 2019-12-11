@@ -31,6 +31,17 @@
 #'   force the program to assume little recombination and thus a low
 #'   transition rate; otherwise it will identify the small blocks of LD as
 #'   ancient IBD, and will force the number of generations to be large.
+#' @param overwrite Boolean detailing if output files already exist, should
+#'   they be overwritten. Deafult = FALSE
+#' @param fract_only Boolean detailing whether to rturn just the fract.
+#'   Default = FALSE
+#' @param eps Numeric for error rate in genotype calls. Default = .001
+#' @param min_inform Minimum number of informative sites in a pairwise. Default = 10
+#' @param min_discord Minimum discordance in comparison. Default = 0. Set > 0 to skip identical pairs
+#' @param max_discord Maximum discordance in comparison. Default = 1. Set < 1 to skip unrelated pairs
+#' @param nchrom Number of chromosomes. Default = 14 for falciparum
+#' @param min_snp_sep Minimum snp distance, i.e. skip next snp(s) if too close to last one. Default = 5 (bp)
+#' @param rec_rate Recombination rate. Default = 7.4e-7. (7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016))
 #'
 #' @return return list of summary data frames of hmmIBD output
 #'
@@ -47,38 +58,66 @@ hmm_ibd <- function(input_file,
                     max_fit_iterations = NULL,
                     exclude_ids = NULL,
                     analysis_ids = NULL,
-                    num_gens = NULL) {
+                    num_gens = NULL,
+                    overwrite = FALSE,
+                    fract_only = FALSE,
+                    eps = 0.001,
+                    min_inform = 10,
+                    min_discord = 0,
+                    max_discord = 1,
+                    nchrom = 14,
+                    min_snp_sep = 5,
+                    rec_rate = 7.47e-5) {
 
-  # create param list
-  param_list <- list(
-    f = allele_freqs,
-    F = allele_freqs_sec_pop,
-    i = input_file,
-    I = genotypes_sec_pop,
-    o = output_file,
-    m = max_fit_iterations,
-    b = exclude_ids,
-    g = analysis_ids,
-    n = num_gens
-  )
 
-  # run cpp code
-  ret <- hmmibd_c(param_list)
-
-  # check result
-  if (ret) {
-    stop("c++ somehow returned non-integer")
-  }
-
-  # get results
   files <- grep(basename(output_file),
+                list.files(dirname(output_file), full.names = TRUE),
+                value=TRUE)
+
+  if (length(grep("fract", files, value=TRUE)) == 0 || overwrite) {
+
+    # create param list
+    param_list <- list(
+      f = allele_freqs,
+      F = allele_freqs_sec_pop,
+      i = input_file,
+      I = genotypes_sec_pop,
+      o = output_file,
+      m = max_fit_iterations,
+      b = exclude_ids,
+      g = analysis_ids,
+      n = num_gens,
+      eps = eps,
+      min_inform = min_inform,
+      min_discord = min_discord,
+      max_discord = max_discord,
+      nchrom = nchrom,
+      min_snp_sep = min_snp_sep,
+      rec_rate = rec_rate
+    )
+
+    # run cpp code
+    ret <- hmmibd_c(param_list)
+
+    # check result
+    if (ret) {
+      stop("c++ somehow returned non-integer")
+    }
+
+  }
+  # get results
+  files <- grep(output_file,
                 list.files(dirname(output_file), full.names = TRUE),
                 value=TRUE)
 
   # read files in and create results list
   fract <- read.csv(grep("fract", files, value=TRUE), sep = "\t")
-  segments <- read.csv(files[-grep("fract", files)], sep = "\t")
-  res <- list("fract" = fract, "segments" = segments)
+  if (!fract_only) {
+    segments <- read.csv(files[-grep("fract", files)], sep = "\t")
+    res <- list("fract" = fract, "segments" = segments)
+  } else {
+    res <- list("fract" = fract)
+  }
 
   return(res)
 

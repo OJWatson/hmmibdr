@@ -3,3 +3,4 @@
 ^.*\.hmm_fract\.txt$
 ^.*\.hmm\.txt$
 ^README\.Rmd$
+scripts

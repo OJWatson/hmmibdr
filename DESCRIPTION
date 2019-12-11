@@ -4,7 +4,7 @@ Title: HMM Identity by Descent
 Version: 0.1.0
 Author: OJ Watson
 Maintainer: OJ Watson <oj.watson@hotmail.co.uk>
-Description: Wrapper for HMMIBD in Rcpp
+Description: Wrapper for HMMIBD in Rcpp.
 License: GPL-3
 LazyData: true
 Depends: R (>= 3.2.1)

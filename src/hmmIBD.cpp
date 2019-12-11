@@ -18,19 +18,21 @@
 int hmmibd_c(Rcpp::List param_list) {
 
   /* User-settable parameters */
-  const double eps = .001;         // error rate in genotype calls
-  const int min_inform = 10;       // minimum number of informative sites in a pairwise
+  double eps = Rcpp::as<double>(param_list["eps"]);         // error rate in genotype calls
+  int min_inform = Rcpp::as<int>(param_list["min_inform"]); // minimum number of informative sites in a pairwise
   //  comparison (those w/ minor allele)
-  const double min_discord = 0.0;  // minimum discordance in comparison; set > 0 to skip identical pairs
-  const double max_discord = 1.0;  // set < 1 to skip unrelated pairs
-  const int nchrom = 14;           // 14 for falciparum
-  const int min_snp_sep = 5;       // skip next snp(s) if too close to last one; in bp
-  const double rec_rate = 7.4e-7; // 7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016)
+  double min_discord = Rcpp::as<double>(param_list["min_discord"]); // minimum discordance in comparison; set > 0 to skip identical pairs
+  double max_discord = Rcpp::as<double>(param_list["max_discord"]); // set < 1 to skip unrelated pairs
+  int nchrom = Rcpp::as<int>(param_list["nchrom"]); // 14 for falciparum
+  double min_snp_sep = Rcpp::as<double>(param_list["min_snp_sep"]); // skip next snp(s) if too close to last one; in bp
+  double rec_rate = Rcpp::as<double>(param_list["rec_rate"]); // 7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016)
   //  const double rec_rate = 5.8e-7;   // 5.8e-5 cM/bp, or 17kb/cM
+
+  /* end user-settable parameters */
   const double fit_thresh_dpi = .001;
   const double fit_thresh_dk = .01;
   const double fit_thresh_drelk = .001;
-  /* end user-settable parameters */
+
   double k_rec_init = 1.0;          // starting value for N generation parameter
   double k_rec, k_rec_max = 0.;  // working and max value for same
   const int max_all = 8;
@@ -972,13 +974,12 @@ int hmmibd_c(Rcpp::List param_list) {
       }   // end if use pair
 
       ipair++;
-
-      //      if (ipair%1000 == 0) {Rprintf("Starting pair %d\n", ipair);}
+      if (ipair%10000 == 0) {Rprintf("Starting pair %d\n", ipair);}
     }
   }
 
   fclose(pf);
   fclose(outf);
 
-  return(1);
+  return(0);
 }
