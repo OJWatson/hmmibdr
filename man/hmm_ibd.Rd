@@ -22,7 +22,7 @@ hmm_ibd(
   max_discord = 1,
   nchrom = 14,
   min_snp_sep = 5,
-  rec_rate = 7.4 - 7
+  rec_rate = 7.4e-07
 )
 }
 \arguments{
