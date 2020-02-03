@@ -67,7 +67,7 @@ hmm_ibd <- function(input_file,
                     max_discord = 1,
                     nchrom = 14,
                     min_snp_sep = 5,
-                    rec_rate = 7.47e-5) {
+                    rec_rate = 7.4e-7) {
 
 
   files <- grep(basename(output_file),

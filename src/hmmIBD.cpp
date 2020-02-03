@@ -24,7 +24,7 @@ int hmmibd_c(Rcpp::List param_list) {
   double min_discord = Rcpp::as<double>(param_list["min_discord"]); // minimum discordance in comparison; set > 0 to skip identical pairs
   double max_discord = Rcpp::as<double>(param_list["max_discord"]); // set < 1 to skip unrelated pairs
   int nchrom = Rcpp::as<int>(param_list["nchrom"]); // 14 for falciparum
-  double min_snp_sep = Rcpp::as<double>(param_list["min_snp_sep"]); // skip next snp(s) if too close to last one; in bp
+  int min_snp_sep = Rcpp::as<int>(param_list["min_snp_sep"]); // skip next snp(s) if too close to last one; in bp
   double rec_rate = Rcpp::as<double>(param_list["rec_rate"]); // 7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016)
   //  const double rec_rate = 5.8e-7;   // 5.8e-5 cM/bp, or 17kb/cM
 
