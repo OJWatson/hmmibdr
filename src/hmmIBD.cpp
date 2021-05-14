@@ -44,7 +44,7 @@ int hmmibd_c(Rcpp::List param_list) {
   int max_good = 200;
   int linesize = 4000;
   char *newLine1, *newLine2, *token, *running, **sample1, **sample2, *head;
-  char file[64], **bad_samp=NULL, **good_pair[2]={NULL};
+  char *file, **bad_samp=NULL, **good_pair[2]={NULL};
   int itoken, nsample1=0, nsample2=0, isamp, chr, sum, iall, all, js, snp_ind;
   int **geno1, **geno2, chr2, pos2, majall, npair_report;
   double **discord, pright, seq_ibd_fb=0, seq_dbd_fb=0, p_ibd, fmean, fmeani, fmeanj;
@@ -58,7 +58,7 @@ int hmmibd_c(Rcpp::List param_list) {
   int nsample_use1, nsnp, ipair, npair, isnp, chrlen, *pos, *psi[2], max, iline;
   int *nmiss_bypair=NULL, totall1, totall2, *start_chr=NULL, *end_chr=NULL, is, maxlen;
   int **use_pair=NULL, *nall=NULL, killit, nuse_pair=0, gi, gj, delpos;
-  int ntri=0, ibad, nbad, start_snp, ex_all=0, last_snp, c, iflag1, iflag2, oflag;
+  int ntri=0, ibad, nbad, start_snp, ex_all=0, last_snp, iflag1, iflag2, oflag;
   int freq_flag1, freq_flag2, fpos=0, fchr=0, iter, ntrans, mflag, finish_fit, bflag, gflag;
   int prev_chrom, ngood, nflag, nskipped=0, nsite, jstart;
   int count_ibd_vit, count_dbd_vit;
@@ -230,6 +230,8 @@ int hmmibd_c(Rcpp::List param_list) {
     inf2 = fopen(data_file2, "r");
     if (inf2 == NULL) {REprintf("Could not open input file %s\n", data_file2); Rcpp::stop("");}
   }
+  file = (char *)calloc(size_t(strlen(out_filebase) + strlen(".hmm.txt") + 1), sizeof(char));
+  if (file == NULL) { REprintf("Could not allocate memory for filename(s).\n"); Rcpp::stop(""); }
   sprintf(file, "%s.hmm.txt", out_filebase);
   outf = fopen(file, "w");
   if (outf == NULL) {REprintf("Could not open output file %s\n", file); Rcpp::stop("");}
