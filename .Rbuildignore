@@ -6,3 +6,4 @@
 scripts
 ^scripts$
 .travis.yml
+.github

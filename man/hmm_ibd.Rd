@@ -22,7 +22,8 @@ hmm_ibd(
   max_discord = 1,
   nchrom = 14,
   min_snp_sep = 5,
-  rec_rate = 7.4e-07
+  rec_rate = 7.4e-07,
+  cache = TRUE
 )
 }
 \arguments{
@@ -33,7 +34,8 @@ hmm_ibd(
 
 \item{allele_freqs}{File of allele frequencies for the sample population.
 Format: tab-delimited, no header, one variant per row.
-Line format: <chromosome (int)> <position (bp, int)> <allele 1 freq> <all 2 freq> [<all 3 freq>] ...
+Line format:
+<chromosome (int)> <position (bp, int)> <allele 1 freq> <all 2 freq>  ...
 The genotype and frequency files must contain exactly the same variants,
 in the same order. If no file is supplied, allele frequencies are
 calculated from the input data file.}
@@ -71,17 +73,25 @@ Default = FALSE}
 
 \item{eps}{Numeric for error rate in genotype calls. Default = .001}
 
-\item{min_inform}{Minimum number of informative sites in a pairwise. Default = 10}
+\item{min_inform}{Minimum number of informative sites in a pairwise.
+Default = 10}
 
-\item{min_discord}{Minimum discordance in comparison. Default = 0. Set > 0 to skip identical pairs}
+\item{min_discord}{Minimum discordance in comparison.
+Default = 0. Set > 0 to skip identical pairs}
 
-\item{max_discord}{Maximum discordance in comparison. Default = 1. Set < 1 to skip unrelated pairs}
+\item{max_discord}{Maximum discordance in comparison.
+Default = 1. Set < 1 to skip unrelated pairs}
 
 \item{nchrom}{Number of chromosomes. Default = 14 for falciparum}
 
-\item{min_snp_sep}{Minimum snp distance, i.e. skip next snp(s) if too close to last one. Default = 5 (bp)}
+\item{min_snp_sep}{Minimum snp distance, i.e. skip next snp(s) if too
+close to last one. Default = 5 (bp)}
 
-\item{rec_rate}{Recombination rate. Default = 7.4e-7. (7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016))}
+\item{rec_rate}{Recombination rate. Default = 7.4e-7.
+(7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016))}
+
+\item{cache}{Should files created by hmm_ibd be cached (i.e. not deleted).
+Default = TRUE, i.e. keep the files}
 }
 \value{
 return list of summary data frames of hmmIBD output

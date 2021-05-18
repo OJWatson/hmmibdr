@@ -8,7 +8,8 @@
 #'   ".hmm.txt" and ".hmm_fract.txt" appended to the supplied name.
 #' @param allele_freqs File of allele frequencies for the sample population.
 #'   Format: tab-delimited, no header, one variant per row.
-#'   Line format: <chromosome (int)> <position (bp, int)> <allele 1 freq> <all 2 freq> [<all 3 freq>] ...
+#'   Line format:
+#'   <chromosome (int)> <position (bp, int)> <allele 1 freq> <all 2 freq>  ...
 #'   The genotype and frequency files must contain exactly the same variants,
 #'   in the same order. If no file is supplied, allele frequencies are
 #'   calculated from the input data file.
@@ -36,19 +37,24 @@
 #' @param fract_only Boolean detailing whether to rturn just the fract.
 #'   Default = FALSE
 #' @param eps Numeric for error rate in genotype calls. Default = .001
-#' @param min_inform Minimum number of informative sites in a pairwise. Default = 10
-#' @param min_discord Minimum discordance in comparison. Default = 0. Set > 0 to skip identical pairs
-#' @param max_discord Maximum discordance in comparison. Default = 1. Set < 1 to skip unrelated pairs
+#' @param min_inform Minimum number of informative sites in a pairwise.
+#'   Default = 10
+#' @param min_discord Minimum discordance in comparison.
+#'   Default = 0. Set > 0 to skip identical pairs
+#' @param max_discord Maximum discordance in comparison.
+#'   Default = 1. Set < 1 to skip unrelated pairs
 #' @param nchrom Number of chromosomes. Default = 14 for falciparum
-#' @param min_snp_sep Minimum snp distance, i.e. skip next snp(s) if too close to last one. Default = 5 (bp)
-#' @param rec_rate Recombination rate. Default = 7.4e-7. (7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016))
+#' @param min_snp_sep Minimum snp distance, i.e. skip next snp(s) if too
+#'   close to last one. Default = 5 (bp)
+#' @param rec_rate Recombination rate. Default = 7.4e-7.
+#'   (7.4e-5 cM/bp or 13.5 kb/cM Miles et al, Genome Res 26:1288-1299 (2016))
+#' @param cache Should files created by hmm_ibd be cached (i.e. not deleted).
+#'   Default = TRUE, i.e. keep the files
 #'
 #' @return return list of summary data frames of hmmIBD output
 #'
 #' @export
 #'
-
-
 
 hmm_ibd <- function(input_file,
                     output_file,
@@ -119,7 +125,7 @@ hmm_ibd <- function(input_file,
     res <- list("fract" = fract)
   }
 
-  if (cache == FALSE) {
+  if (!cache) {
     file.remove(files)
   }
 

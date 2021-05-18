@@ -1,0 +1,22 @@
+destination: docs
+
+
+template:
+  params:
+    bootswatch: flatly
+
+reference:
+  - title: "Running HMMIBD"
+    contents:
+      - hmm_ibd
+
+navbar:
+  type: default
+  left:
+    - href: index.html
+      icon: fa-home
+    - text: News
+      href: news/index.html
+  right:
+    - icon: fa-github
+      href: https://github.com/OJWatson/hmmibdr
