@@ -11,9 +11,9 @@ test_that("hmmibdr runs", {
 
   # run hmmibd and check outputs
   tf <- tempfile()
-  expect_output(out <- hmm_ibd(input_file = input_file,
+  out <- hmm_ibd(input_file = input_file,
                allele_freqs =  allele_freqs,
-               output_file = tf))
+               output_file = tf)
 
   expect_equal(names(out), c("fract", "segments"))
   expect_equal(ncol(out$fract), 11)
