@@ -9,7 +9,7 @@ Authors@R:
              role = c("aut", "cre"),
              email = "oj.watson@hotmail.co.uk",
              comment = c(ORCID = "0000-0003-2374-0741")))
-Maintainer: Oliver Watson <o.watson@imperial.ac.uk>
+Maintainer: Oliver Watson <oj.watson@hotmail.co.uk>
 Description: Wrapper for HMMIBD in Rcpp.
 License: MIT + file LICENCE
 LazyData: true
