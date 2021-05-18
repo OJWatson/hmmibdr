@@ -44,22 +44,22 @@ int hmmibd_c(Rcpp::List param_list) {
   int max_good = 200;
   int linesize = 4000;
   char *newLine1, *newLine2, *token, *running, **sample1, **sample2, *head;
-  char file[64], **bad_samp=NULL, **good_pair[2]={NULL};
+  char *file, **bad_samp=NULL, **good_pair[2]={NULL};
   int itoken, nsample1=0, nsample2=0, isamp, chr, sum, iall, all, js, snp_ind;
   int **geno1, **geno2, chr2, pos2, majall, npair_report;
   double **discord, pright, seq_ibd_fb=0, seq_dbd_fb=0, p_ibd, fmean, fmeani, fmeanj;
   double **freq1=NULL, **freq2=NULL, *ffreq1=NULL, *ffreq2=NULL, xisum, xi[2][2], trans_pred, trans_obs;
   double *phi[2], pinit[2], pi[2], *b[2], a[2][2], ptrans, *alpha[2], *beta[2], *scale;
   double maxval, max_phi=0, max_phiL, seq_ibd, seq_dbd, count_ibd_fb, count_dbd_fb;
-  double gamma[2], last_pi=0, last_prob=0, last_krec=0, delpi, delprob, delk, maxfreq;
+  double gamma[2], last_pi=0, last_krec=0, delpi, delk, maxfreq;
   FILE *inf1=NULL, *inf2=NULL, *outf=NULL, *pf=NULL, *ff1=NULL, *ff2=NULL;
   int *diff=NULL, *same_min=NULL, jsamp, *allcount1, *allcount2, *use_sample1, *use_sample2;
   int *traj, add_seq, nsample_use2;
-  int nsample_use1, nsnp, ipair, npair, isnp, chrlen, *pos, *psi[2], max, iline;
+  int nsample_use1, nsnp, ipair, npair, isnp, *pos, *psi[2], max, iline;
   int *nmiss_bypair=NULL, totall1, totall2, *start_chr=NULL, *end_chr=NULL, is, maxlen;
   int **use_pair=NULL, *nall=NULL, killit, nuse_pair=0, gi, gj, delpos;
-  int ntri=0, ibad, nbad, start_snp, ex_all=0, last_snp, c, iflag1, iflag2, oflag;
-  int freq_flag1, freq_flag2, fpos=0, fchr=0, iter, ntrans, mflag, finish_fit, bflag, gflag;
+  int ntri=0, ibad, nbad, start_snp, ex_all=0, last_snp, iflag2, oflag;
+  int freq_flag1, freq_flag2, fpos=0, fchr=0, iter, ntrans, finish_fit, bflag, gflag;
   int prev_chrom, ngood, nflag, nskipped=0, nsite, jstart;
   int count_ibd_vit, count_dbd_vit;
 
@@ -73,7 +73,7 @@ int hmmibd_c(Rcpp::List param_list) {
   strcat(usage_string, "  [-g <file with sample pairs to use>]\n");
 
   opterr = 0;
-  mflag = iflag1 = iflag2 = oflag = freq_flag1 = freq_flag2 = bflag = gflag = nflag = 0;
+  iflag2 = oflag = freq_flag1 = freq_flag2 = bflag = gflag = nflag = 0;
 
   // parse parameters
   if (param_list["f"] != R_NilValue){
@@ -93,7 +93,6 @@ int hmmibd_c(Rcpp::List param_list) {
     strcpy(good_file, param_list["g"]);
   }
   if (param_list["m"] != R_NilValue){
-    mflag = 1;
     niter = Rcpp::as<int>(param_list["m"]);
   }
   if (param_list["n"] != R_NilValue){
@@ -101,7 +100,6 @@ int hmmibd_c(Rcpp::List param_list) {
     k_rec_max = Rcpp::as<double>(param_list["n"]);
   }
   if (param_list["i"] != R_NilValue){
-    iflag1 = 1;
     strcpy(data_file1, param_list["i"]);
   }
   if (param_list["I"] != R_NilValue){
@@ -230,6 +228,8 @@ int hmmibd_c(Rcpp::List param_list) {
     inf2 = fopen(data_file2, "r");
     if (inf2 == NULL) {REprintf("Could not open input file %s\n", data_file2); Rcpp::stop("");}
   }
+  file = (char *)calloc(size_t(strlen(out_filebase) + strlen(".hmm.txt") + 1), sizeof(char));
+  if (file == NULL) { REprintf("Could not allocate memory for filename(s).\n"); Rcpp::stop(""); }
   sprintf(file, "%s.hmm.txt", out_filebase);
   outf = fopen(file, "w");
   if (outf == NULL) {REprintf("Could not open output file %s\n", file); Rcpp::stop("");}
@@ -773,7 +773,6 @@ int hmmibd_c(Rcpp::List param_list) {
       if (use_sample2[jsamp] == 0) {continue;}
       sum = diff[ipair] + same_min[ipair];
       if (use_pair[isamp][jsamp] == 1) {
-        last_prob = 0;
         last_pi = pi[0] = pinit[0];  // initialize with prior
         pi[1] = pinit[1];
         last_krec = k_rec = k_rec_init;
@@ -786,7 +785,6 @@ int hmmibd_c(Rcpp::List param_list) {
           for (chr = 1; chr <= nchrom; chr++) {
             nsite = 0;
             if (end_chr[chr] < 0) {continue;}
-            chrlen = pos[end_chr[chr]] - pos[start_chr[chr]];
             for (isnp = start_chr[chr]; isnp <= end_chr[chr]; isnp++) {
               snp_ind = isnp - start_chr[chr];
               gi = geno1[isamp][isnp];
@@ -970,10 +968,8 @@ int hmmibd_c(Rcpp::List param_list) {
           delpi = pi[0] - last_pi;
           delk = k_rec - last_krec;
           if (nflag == 1 && k_rec > k_rec_max) {delk = k_rec_max - last_krec;}
-          delprob = max_phi - last_prob;
           last_pi = pi[0];
           last_krec = k_rec;
-          last_prob = max_phi;
 
           // Evaluate fit
           if (fabs(delpi) < fit_thresh_dpi &&

@@ -1,0 +1,7 @@
+install.packages("testthat", repos = "http://cran.us.r-project.org")
+library(testthat)
+# library(hmmibdr)
+install.packages("devtools", repos = "http://cran.us.r-project.org")
+devtools::load_all("../hmmibdr")
+# test_check("hmmibdr")
+test_file("tests/testthat/test_functionality.R")

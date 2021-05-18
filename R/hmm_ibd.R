@@ -67,8 +67,8 @@ hmm_ibd <- function(input_file,
                     max_discord = 1,
                     nchrom = 14,
                     min_snp_sep = 5,
-                    rec_rate = 7.4e-7) {
-
+                    rec_rate = 7.4e-7,
+                    cache = TRUE) {
 
   files <- grep(basename(output_file),
                 list.files(dirname(output_file), full.names = TRUE),
@@ -101,7 +101,7 @@ hmm_ibd <- function(input_file,
 
     # check result
     if (ret) {
-      stop("c++ somehow returned non-integer")
+      stop("c++ somehow returned non-zero")
     }
 
   }
@@ -119,7 +119,9 @@ hmm_ibd <- function(input_file,
     res <- list("fract" = fract)
   }
 
+  if (cache == FALSE) {
+    file.remove(files)
+  }
+
   return(res)
-
-
 }
