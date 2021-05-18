@@ -16,6 +16,5 @@
 #include <Rcpp.h>
 #include <string>
 #include <unistd.h>
-#include <cstring>
 
 int hmmibd_c(Rcpp::List param_list);
