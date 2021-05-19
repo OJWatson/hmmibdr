@@ -111,9 +111,14 @@ hmm_ibd <- function(input_file,
     }
 
   }
+
   # get results
-  files <- grep(output_file,
-                list.files(dirname(output_file), full.names = TRUE),
+
+  # file path correct for windows
+  suppressWarnings(output_path <- normalizePath(output_file, winslash = "/"))
+
+  files <- grep(output_path,
+                list.files(dirname(output_path), full.names = TRUE),
                 value=TRUE)
 
   # read files in and create results list
