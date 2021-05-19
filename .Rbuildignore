@@ -6,3 +6,5 @@
 scripts
 ^scripts$
 .travis.yml
+.github
+_pkgdown.yml

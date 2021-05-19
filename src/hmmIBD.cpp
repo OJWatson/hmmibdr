@@ -198,7 +198,7 @@ int hmmibd_c(Rcpp::List param_list) {
     else {
       while (fgets(newLine1, linesize, inf1) != NULL) {
         newLine1[strcspn(newLine1, "\r\n")] = 0;
-        for (running = newLine1, itoken = 0; (token = strsep(&running, "\t")) != NULL && itoken < 2;
+        for (running = newLine1, itoken = 0; (token = altstrsep(&running, "\t")) != NULL && itoken < 2;
         itoken++) {
           strncpy(good_pair[itoken][ngood], token, 63);
         }
@@ -261,7 +261,7 @@ int hmmibd_c(Rcpp::List param_list) {
   head = (char *)malloc((linesize+1) * sizeof(char));
   assert(head != NULL);
   strcpy(head, newLine1);
-  for (running = newLine1, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
+  for (running = newLine1, itoken = 0; (token = altstrsep(&running, "\t")) != NULL; itoken++) {
     if (itoken > 1) {nsample1++;}
   }
 
@@ -285,7 +285,7 @@ int hmmibd_c(Rcpp::List param_list) {
 
   // Parse header1, store sample names after screening for excluded sample ids
   isamp = nsample_use1 = nsample_use2 = 0;
-  for (running = head, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
+  for (running = head, itoken = 0; (token = altstrsep(&running, "\t")) != NULL; itoken++) {
     if (itoken > 1) {
       strncpy(sample1[isamp], token, 63);
       use_sample1[isamp] = 1;
@@ -328,7 +328,7 @@ int hmmibd_c(Rcpp::List param_list) {
     head = (char *)malloc((linesize+1) * sizeof(char));
     assert(head != NULL);
     strcpy(head, newLine1);
-    for (running = newLine1, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
+    for (running = newLine1, itoken = 0; (token = altstrsep(&running, "\t")) != NULL; itoken++) {
       if (itoken > 1) {nsample2++;}
     }
 
@@ -362,7 +362,7 @@ int hmmibd_c(Rcpp::List param_list) {
   // Parse header2, store sample names after screening for excluded sample ids
   if (iflag2 == 1) {
     isamp = 0;
-    for (running = head, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
+    for (running = head, itoken = 0; (token = altstrsep(&running, "\t")) != NULL; itoken++) {
       if (itoken > 1) {
         strncpy(sample2[isamp], token, 63);
         use_sample2[isamp] = 1;
@@ -490,7 +490,7 @@ int hmmibd_c(Rcpp::List param_list) {
     for (iall = 0; iall <= max_all; iall++) {allcount1[iall] = allcount2[iall] = 0;}
 
     // Parse line, pop1
-    for (running = newLine1, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
+    for (running = newLine1, itoken = 0; (token = altstrsep(&running, "\t")) != NULL; itoken++) {
       if (itoken == 0) {
         chr = strtol(token, &erp, 10);
         if (token == erp) {
@@ -538,7 +538,7 @@ int hmmibd_c(Rcpp::List param_list) {
 
     // Parse line, pop2
     if (iflag2 == 1) {
-      for (running = newLine2, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
+      for (running = newLine2, itoken = 0; (token = altstrsep(&running, "\t")) != NULL; itoken++) {
         if (itoken == 0) {
           chr2 = strtol(token, &erp, 10);
           if (token == erp) {
@@ -593,7 +593,7 @@ int hmmibd_c(Rcpp::List param_list) {
         Rcpp::stop("");
       };
       fpos = fchr = 0;
-      for (running = newLine1, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
+      for (running = newLine1, itoken = 0; (token = altstrsep(&running, "\t")) != NULL; itoken++) {
         if (itoken == 0) {
           fchr = strtol(token, &erp, 10);
           if (token == erp) {
@@ -628,7 +628,7 @@ int hmmibd_c(Rcpp::List param_list) {
         Rcpp::stop("");
       };
       fpos = fchr = 0;
-      for (running = newLine2, itoken = 0; (token = strsep(&running, "\t")) != NULL; itoken++) {
+      for (running = newLine2, itoken = 0; (token = altstrsep(&running, "\t")) != NULL; itoken++) {
         if (itoken == 0) {
           fchr = strtol(token, &erp, 10);
           if (token == erp) {
